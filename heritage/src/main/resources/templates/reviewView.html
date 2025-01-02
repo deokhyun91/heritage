@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.thymeleaf.org">
+<th:block th:replace="/headSub"></th:block>
+<body>
+
+        <th:block th:replace="/head"></th:block>       
+        <div class="wrapIn pt50 pb50">
+            <div class="ListView-tit">
+                <div class="flex" style="align-items: center;">                
+                	<img class="data-img" src="" alt="" style="width: 15%; border-radius: 20px; margin-right: 15px;max-height: 150px; object-fit: cover;">
+                	<div class="ListView-tit-box"></div>
+            	</div>
+            </div>
+            <div class="ListView-op-wrap">         
+                <img class="profile" src="/static/img/profileW.png" alt="">
+                <div>
+                    <p class="fs18" id="get-id"></p>
+                    <ul class="ListView-op">
+                        <li><i class="fa fa-eye" id="review-count"></i></li>
+                        <li><i class="fa fa-clock-o" id="review-date-create"></i></li>
+                        <li><i class="fa fa-clock-o" id="review-date-update"></i></li>
+                        <li class="ListView-op-right"><i class="fa fa-th-list"></i></li>
+                    </ul>
+                </div>
+            </div>           
+            <p class="reviewContent mt20">               
+            </p>
+          
+           
+        </div>
+       	<script type="text/javascript" src="/static/js/reviewview.js"></script>  
+
+
+        <th:block th:replace="/tail"></th:block>
+
+     
+</body>
+</html>

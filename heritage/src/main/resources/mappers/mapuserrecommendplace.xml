@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.web.heritage.domain.map.MapUserRecommendPlaceRespository">
+	
+	<select id="getUserRecommendPlace"  parameterType="String" resultType="com.web.heritage.domain.map.MapUserRecommendPlace">
+			SELECT
+				*
+			FROM 
+				place_recommend_mst 
+			WHERE
+				user_id = #{id}
+	</select>	
+	
+	<insert id="saveUserRecommendPlace" parameterType="hashmap">
+		INSERT INTO
+			place_recommend_mst 
+		VALUES(
+			0,
+			#{id},
+			#{placeId},		
+			NOW(),
+			NOW());	
+	</insert>		
+	
+	<delete id="deleteUserRecommendPlace" parameterType="hashmap">
+		DELETE
+		FROM
+			place_recommend_mst
+		WHERE		
+			user_id = #{id} AND place_id = #{placeId} AND recommend_code = #{recommendCode}
+	</delete>
+
+</mapper>

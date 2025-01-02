@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.thymeleaf.org">
+<th:block th:replace="/headSub"></th:block>
+<body>
+
+        <th:block th:replace="/head"></th:block>
+	
+
+		<div class="logInWrap" >
+			<div class="wrapIn" style="height: 100%;">
+		<div class="logInBox">
+		<p class="fs22">Login</p>
+		
+        <form method="post" action="/heritage/login">
+			<!-- username은 PrincipalDetailsService의 SignupReqDto에 맞춰야하는지 -->
+			<input name="username" placeholder="아이디"> 
+			<input type="password" name="password" placeholder="비밀번호">
+			<button type="submit" class="logInBtn">로그인</button>
+			<a href="/heritage/auth/join" class="joinBtn">회원가입</a>
+		</form>
+		
+		<button type="button" onclick="location.href='/oauth2/authorization/google';" class="googleBtn">Google 계정 로그인</button>
+		<button type="button" onclick="location.href='/oauth2/authorization/naver';" class="naverBtn">Naver 계정 로그인</button>
+	</div>
+	</div>
+</div>
+        <th:block th:replace="/tail"></th:block>
+  
+</body>
+</html>

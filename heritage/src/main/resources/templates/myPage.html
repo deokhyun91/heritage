@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.thymeleaf.org">
+<th:block th:replace="/headSub"></th:block>
+<body>
+
+        <th:block th:replace="/head"></th:block>
+
+        
+        <div class="wrapIn pt50 pb50">
+            <p class="List-tit">My Page</p>
+          
+            <div class="flex">
+                <div class="myPage-box0">
+                        <p class="fs22">회원정보</p>        
+                       
+                          
+                            <ul class="userInfoWrap">
+                              
+                            </ul>
+                            <a href="/heritage/auth/userUpdate" class="userUpdateBtn">회원정보 수정</a>
+                            <a class="userDeleteBtn">회원탈퇴</a>
+                </div>
+                <div class="myPage-box1">
+                    <a href="/heritage/myRecommend">
+                        <i class="fa fa-heart"></i>
+                        <p class="fs22">나의 관심목록</p>
+                        <p class="fs16 op60 mt5">내가 좋아요를 누른 <br> 문화재, 주변시설을 볼 수 있어요.</p>
+                    </a> 
+                </div>
+                <div class="myPage-box1">
+                    <a href="/heritage/myReviewList">
+                        <i class="fa fa-pencil-square-o"></i>
+                        <p class="fs22">나의 후기내역</p>
+                        <p class="fs16 op60 mt5">내가 쓴 문화재, 주변시설 <br>후기를 볼 수 있어요.</p>
+                    </a> 
+                </div>
+                
+            </div>
+            
+        </div>
+       
+
+
+        <th:block th:replace="/tail"></th:block>
+        <script src ="/static/js/principal2.js"></script>
+     
+</body>
+</html>

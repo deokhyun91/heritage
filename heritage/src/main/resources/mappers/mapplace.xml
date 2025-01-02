@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.web.heritage.domain.map.MapPlaceRespository">
+		
+	<select id="getPlaceData"  parameterType="hashmap" resultType="com.web.heritage.domain.map.MapPlace">
+		SELECT 
+			dm.*,
+			review.review_cnt,
+			recommend.recommend_cnt
+		FROM 
+			(SELECT 
+				*
+			FROM				
+				<choose>
+					<when test='type.equals("food")'> 	
+						place_food_mst
+					</when>    
+					<when test='type.equals("cafe")'> 	
+						place_cafe_mst
+					</when>      	
+					<when test='type.equals("store")'> 	
+						place_store_mst
+					</when>  
+					<when test='type.equals("gas")'> 	
+						place_gas_mst
+					</when>  	
+					<when test='type.equals("parking")'> 	
+						place_parking_mst
+					</when> 
+					<when test='type.equals("hotel")'> 	
+						place_hotel_mst
+					</when>  			  
+				</choose>
+			WHERE
+				data_code = #{dataCode}) dm
+								LEFT OUTER JOIN	
+									(SELECT 
+										place_id,
+										COUNT(*) review_cnt
+									FROM
+										place_review_mst
+									GROUP BY
+										place_id) review ON (dm.place_id = review.place_id)
+								LEFT OUTER JOIN
+									(SELECT 
+										place_id,
+										COUNT(*) recommend_cnt
+									FROM
+										place_recommend_mst
+									GROUP BY
+										place_id) recommend ON (dm.place_id = recommend.place_id)
+		
+	</select>
+	
+</mapper>

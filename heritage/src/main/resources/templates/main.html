@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.thymeleaf.org">
+<th:block th:replace="/headSub"></th:block>
+<body>
+	    <th:block th:replace="/head"></th:block>
+	    
+	    <div class="main-search-wrap">
+	        <div class="wrapIn2">
+	            <p class="fs36">어떤 문화재를 찾으세요?</p>
+	            <input type="search" placeholder="지역을 검색하세요." class="mainSearch">
+	            <button type="button" class="main-sear-bu"><i class="fa fa-search"></i></button>                 
+	        </div>
+	    </div>
+	    
+	    <div class="main-search-menu">             
+	        <div class="wrapIn2">
+	            <div class="flex2">
+	                <div class="msm-box1">
+	                    <h2 class="fs16 fwb mb20"><i class="fa fa-globe"></i> 지역 검색 결과</h2>
+	                    <ul class="msm-box1-result"></ul>                       
+	                </div>
+	                <div class="msm-box2">
+	                    <h2 class="fs16 fwb mb20"><i class="fa fa-book"></i> 문화재 검색 결과</h2>
+	                    <ul class="msm-box2-result"></ul>
+	                </div>
+	            </div>               
+	        </div>
+	    </div>
+	
+	    <img src="/static/img/mainBg1.png" alt="" class="mainBg1">
+	    <img src="/static/img/mainBg2.png" alt="" class="mainBg2">
+	    
+	    <div class="wrapIn pt50 pb50">
+	        <!-- 찜많은 리스트 -->
+	        <p class="fs22 mb10"><span class="blue2 fs22 fwb">문찾</span>유저가 사랑한 추천 문화재</p>
+	        <p class="blue2 fs18 mb30">#가기좋은문화재&nbsp;&nbsp; #기억에남는문화재&nbsp;&nbsp; #다시보는문화재</p>
+	        <ul class="galleryList" id="galleryList-recommend"></ul>
+	        <!-- 찜많은 리스트 -->
+	        <!-- 후기많은 리스트 -->
+	        <p class="fs22 mb10 mt30"><span class="blue2 fs22 fwb">후기</span>가 쏟아지는 문화재 </p>
+	        <p class="blue2 fs18 mb30">#문화재데이트&nbsp;&nbsp; #문화재탐방&nbsp;&nbsp; #역사공부</p>
+	        <ul class="galleryList" id="galleryList-review"></ul>
+	        <!-- 후기많은 리스트 -->  
+	    </div>
+	   	<script type="text/javascript" src="/static/js/mainview.js"></script>       
+	    <th:block th:replace="/tail"></th:block>
+	   
+</body>
+</html>

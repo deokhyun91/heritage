@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.web.heritage.domain.review.ReviewWriteDataRespository">
+	<select id="getReviewData"   parameterType="String" resultType="com.web.heritage.domain.review.ReviewWriteData">
+			SELECT
+				data_koname,
+				data_img
+			FROM
+				data_mst
+			WHERE
+				data_code = #{dataCode}
+	</select>	
+	
+	<insert id="saveReivewData"  parameterType="hashmap">
+		INSERT INTO
+			data_review_mst 
+		VALUES(
+			0,
+			#{dataCode},
+			#{userId},	
+			#{reviewName},
+			#{reviewContent},	
+			0,
+			NOW(),
+			NOW());	
+	</insert>	
+		
+</mapper>

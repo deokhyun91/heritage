@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.web.heritage.domain.login.auth.UserRespository">
+
+  	<insert id="save" parameterType="com.web.heritage.domain.login.auth.User">
+		  insert into
+		  	 	user_mst
+		  values(
+		  		0,
+		  		#{user_id},
+		  		#{oauth_id}, 
+		  		#{user_provider}, 
+		  		#{user_pw}, 
+		  		#{user_name}, 
+		  		#{user_phon},
+		  		#{user_email}, 
+		  		#{user_gender}, 	
+		  		now(),
+		  		now()
+		  		);
+		  	
+	  </insert>
+	<select id="findUserByUsername" parameterType="String" resultType="com.web.heritage.domain.login.auth.User">
+		SELECT 
+			*
+		FROM 
+			user_mst
+		WHERE
+			user_id = #{username};
+	
+	</select>
+	
+	 <delete id="deleteUserInfo" parameterType="String">
+			DELETE
+			FROM
+				user_mst
+			WHERE
+				user_id = #{user_id};
+	  </delete>
+	  
+	   <delete id="deleteDataRecommend" parameterType="String">
+			DELETE
+			FROM
+				data_recommend_mst
+			WHERE
+				user_id = #{user_id};
+	  </delete>
+	  
+	   <delete id="deleteDataReview" parameterType="String">
+			DELETE
+			FROM
+				data_review_mst
+			WHERE
+				user_id = #{user_id};
+	  </delete>
+	  
+	   <delete id="deletePlaceRecommend" parameterType="String">
+			DELETE
+			FROM
+				place_recommend_mst
+			WHERE
+				user_id = #{user_id};
+	  </delete>
+	  
+	   <delete id="deletePlaceReview" parameterType="String">
+			DELETE
+			FROM
+				place_review_mst
+			WHERE
+				user_id = #{user_id};
+	  </delete>
+	  
+	    <update id="set" parameterType="com.web.heritage.domain.login.auth.User">
+			UPDATE
+				user_mst
+			SET
+				
+				user_id = #{user_id},
+		  		user_name = #{user_name}, 
+		  		user_phon = #{user_phon},
+		  		user_email = #{user_email}, 
+		  		user_gender = #{user_gender}, 
+				update_date = NOW()
+			WHERE
+				user_code = #{user_code};
+	  </update>
+	  
+	
+
+</mapper>

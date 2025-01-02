@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.web.heritage.domain.mylist.MyListRecommendPlaceRepository">
+	
+	<select id="getMyRecommendPlaceData" parameterType="hashmap" resultType="com.web.heritage.domain.mylist.MyListRecommendPlaceData">
+	
+	 SELECT
+    	vcm.recommend_code,
+		vcm.user_id,
+		vcm.place_id,
+		vcm.place_code,
+		vcm.data_code,
+		vcm.category_name,
+		vcm.place_name,
+		vcm.place_road_address,
+		vcm.place_address,
+		vcm.place_phone,
+		vcm.place_url,
+		vcm.place_img,
+		mm.data_koname,
+		mm.data_address,
+		mm.data_divide,
+		mm.data_period,
+		mm.data_group
+		
+
+	FROM
+		(SELECT
+			rm.recommend_code,
+			rm.user_id,
+			rm.place_id,
+			fm.place_code,
+			fm.data_code,
+			fm.category_name,
+			fm.place_name,
+			fm.place_road_address,
+			fm.place_address,
+			fm.place_phone,
+			fm.place_url,
+			fm.place_img
+		FROM
+			(SELECT
+				*
+			FROM
+				place_recommend_mst 
+			WHERE
+				user_id = #{userName}) rm INNER Join
+				<choose>
+					<when test='place.equals("food")'> 	
+						place_food_mst
+					</when>    
+					<when test='place.equals("cafe")'> 	
+						place_cafe_mst
+					</when>      	
+					<when test='place.equals("store")'> 	
+						place_store_mst
+					</when>  
+					<when test='place.equals("gas")'> 	
+						place_gas_mst
+					</when>  	
+					<when test='place.equals("parking")'> 	
+						place_parking_mst
+					</when> 
+					<when test='place.equals("hotel")'> 	
+						place_hotel_mst
+					</when>  			  
+				</choose> fm ON (rm.place_id = fm.place_id)
+			GROUP BY
+				rm.recommend_code) vcm INNER JOIN data_mst mm ON (vcm.data_code = mm.data_code)
+		WHERE
+			<choose>					
+					<when test='type.equals("name")'> 	
+						mm.data_koname LIKE CONCAT('%',#{searchName},'%')
+					</when>    
+					<when test='type.equals("address")'> 	
+						mm.data_address LIKE CONCAT('%',#{searchName},'%')
+					</when>  
+					<when test='type.equals("divide")'> 	
+						mm.data_divide LIKE CONCAT('%',#{searchName},'%')
+					</when>   
+					<when test='type.equals("period")'> 	
+						mm.data_period LIKE CONCAT('%',#{searchName},'%')
+					</when>   	
+					<when test='type.equals("group")'> 	
+						mm.data_group LIKE CONCAT('%',#{searchName},'%')
+					</when>   			
+			</choose>
+		 LIMIT
+			#{index},8;
+	</select>	
+	
+	<select id="getMyRecommendPlaceDataCount" parameterType="hashmap" resultType="Integer">
+	SELECT
+	    COUNT(*)
+			
+	
+	FROM
+		(SELECT
+			rm.recommend_code,
+			rm.user_id,
+			rm.place_id,
+			fm.place_code,
+			fm.data_code,
+			fm.category_name,
+			fm.place_name,
+			fm.place_road_address,
+			fm.place_address,
+			fm.place_phone,
+			fm.place_url,
+			fm.place_img
+		FROM
+			(SELECT
+				*
+			FROM
+				place_recommend_mst 
+			WHERE
+				user_id = #{userName}) rm INNER Join
+				<choose>
+					<when test='place.equals("food")'> 	
+						place_food_mst
+					</when>    
+					<when test='place.equals("cafe")'> 	
+						place_cafe_mst
+					</when>      	
+					<when test='place.equals("store")'> 	
+						place_store_mst
+					</when>  
+					<when test='place.equals("gas")'> 	
+						place_gas_mst
+					</when>  	
+					<when test='place.equals("parking")'> 	
+						place_parking_mst
+					</when> 
+					<when test='place.equals("hotel")'> 	
+						place_hotel_mst
+					</when>  			  
+				</choose> fm ON (rm.place_id = fm.place_id)
+			GROUP BY
+				rm.recommend_code) vcm INNER JOIN data_mst mm ON (vcm.data_code = mm.data_code)
+		WHERE
+			<choose>					
+					<when test='type.equals("name")'> 	
+						mm.data_koname LIKE CONCAT('%',#{searchName},'%')
+					</when>    
+					<when test='type.equals("address")'> 	
+						mm.data_address LIKE CONCAT('%',#{searchName},'%')
+					</when>  
+					<when test='type.equals("divide")'> 	
+						mm.data_divide LIKE CONCAT('%',#{searchName},'%')
+					</when>   
+					<when test='type.equals("period")'> 	
+						mm.data_period LIKE CONCAT('%',#{searchName},'%')
+					</when>   	
+					<when test='type.equals("group")'> 	
+						mm.data_group LIKE CONCAT('%',#{searchName},'%')
+					</when>   			
+			</choose>
+	</select>
+	<delete id="deleteMyListRecommendPlace" parameterType="hashmap">
+		DELETE
+		FROM
+			place_recommend_mst
+		WHERE
+			user_id = #{userName} AND recommend_code = #{recommendCode};
+		
+	  </delete>
+</mapper>

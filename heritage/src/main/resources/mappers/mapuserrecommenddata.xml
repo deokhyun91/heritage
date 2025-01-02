@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.web.heritage.domain.map.MapUserRecommendDataRespository">
+	
+	<select id="getUserRecommendData"  parameterType="String" resultType="com.web.heritage.domain.map.MapUserRecommendData">
+			SELECT
+				*
+			FROM 
+				data_recommend_mst 
+			WHERE
+				user_id = #{id}
+	</select>	
+	
+	<insert id="saveUserRecommendData" parameterType="hashmap">
+		INSERT INTO
+			data_recommend_mst 
+		VALUES(
+			0,
+			#{id},
+			#{dataCode},		
+			NOW(),
+			NOW());	
+	</insert>		
+	
+	<delete id="deleteUserRecommendData" parameterType="hashmap">
+		DELETE
+		FROM
+			data_recommend_mst
+		WHERE		
+			user_id = #{id} AND data_code = #{dataCode} AND recommend_code = #{recommendCode}
+	</delete>
+
+</mapper>

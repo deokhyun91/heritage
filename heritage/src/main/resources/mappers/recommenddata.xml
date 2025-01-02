@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.web.heritage.domain.recommend.RecommendDataRespository">
+	
+	<select id="getRecommendData"   parameterType="hashmap" resultType="com.web.heritage.domain.recommend.RecommendData">
+		SELECT
+			sec.recommend_code,		
+			sec.data_code,
+			sec.data_img,
+			sec.data_koname,
+			sec.data_dynasty,
+			sec.data_address,
+			sec.recommend_cnt,
+			review.review_cnt
+		FROM					
+			(SELECT
+				drm.recommend_code,		
+				drm.data_code,
+				dm.data_img,
+				dm.data_koname,
+				dm.data_dynasty,
+				dm.data_address,
+				recommend.recommend_cnt
+			FROM
+				(SELECT 
+					data_code,
+					data_img,
+					data_koname,
+					data_dynasty,
+					data_address	
+				FROM 
+					data_mst 
+				WHERE
+					<choose>					
+						<when test='type.equals("name")'> 	
+							data_koname LIKE CONCAT('%',#{searchName},'%')
+						</when>    
+						<when test='type.equals("address")'> 	
+							data_address LIKE CONCAT('%',#{searchName},'%')
+						</when>  
+						<when test='type.equals("divide")'> 	
+							data_divide LIKE CONCAT('%',#{searchName},'%')
+						</when>   
+						<when test='type.equals("period")'> 	
+							data_period LIKE CONCAT('%',#{searchName},'%')
+						</when>   	
+						<when test='type.equals("group")'> 	
+							data_group LIKE CONCAT('%',#{searchName},'%')
+						</when>   			
+					</choose>) dm 
+					INNER JOIN data_recommend_mst drm ON (dm.data_code = drm.data_code)
+					INNER JOIN
+					(SELECT 
+						data_code,
+						COUNT(*) recommend_cnt
+					FROM
+						data_recommend_mst
+					GROUP BY
+						data_code) recommend ON (dm.data_code = recommend.data_code)) sec
+						LEFT OUTER JOIN
+										(SELECT 
+											data_code,
+											COUNT(*) review_cnt
+										FROM
+											data_review_mst
+										GROUP BY
+											data_code) review ON (sec.data_code = review.data_code)
+		GROUP BY
+			sec.data_code
+		ORDER BY
+		   <choose>
+				<when test='sort.equals("all")'> 	
+					sec.recommend_code ASC
+				</when>  
+				<when test='sort.equals("review")'> 	
+					review.review_cnt DESC
+				</when>   
+				<when test='sort.equals("recommend")'> 	
+					sec.recommend_cnt DESC
+				</when> 						
+			</choose>	
+	</select>		
+</mapper>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns="http://www.thymeleaf.org">
+<th:block th:replace="/headSub"></th:block>
+	<body>
+		 <th:block th:replace="/head"></th:block>
+		<div class="joinWrap">
+			<div class="wrapIn" style="height: 100%;">
+				<div class="logInBox">
+				<p class="fs22">Join</p>
+				<div class="mb10 blue" style="    text-align: right;
+				padding-right: 5%;">*모든 항목은 필수 입력사항입니다.</div>
+					
+					<input type="text" name="name" placeholder="이름" >
+					<select name="sex" id="" >
+						<option value="">성별</option>
+						<option value="남">남자</option>
+						<option value="여">여자</option>
+					</select>
+				
+					<input type="text" name="email" placeholder="이메일" >
+				
+					<input type="text" name="phone" id="phone" placeholder="연락처(숫자만 입력)" >
+					
+					<input type="text" name="username" id="username" placeholder="아이디(영문+숫자 조합 4~12자)" >
+					
+					<input type="text" name="password" placeholder="비밀번호(영문+숫자+특수문자 조합 8~16자)" >
+				
+					<button type="button" class="joinBtn2">가입하기</button>
+				</div>
+			</div>
+		
+		
+			
+		</div>
+		
+		<th:block th:replace="/tail"></th:block>
+		<script type="text/javascript" src="/static/js/join.js"></script>
+	</body>	
+</html>

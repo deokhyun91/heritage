@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.web.heritage.domain.mylist.MyListReviewPlaceReposity">
+	
+	<select id="getMyReviewPlaceData" parameterType="hashmap" resultType="com.web.heritage.domain.mylist.MyListReviewPlaceData">
+		SELECT
+			sec.review_code,		
+			sec.data_code,
+			sec.data_koname,
+			sec.place_id,
+			sec.place_name,
+			sec.review_name,
+			sec.user_id,
+			sec.review_count,
+			sec.create_date
+		FROM
+		   (SELECT
+		    	prm.review_code,		
+				prm.data_code,
+				dm.data_koname,
+				dm.data_address,	
+				dm.data_divide,
+				dm.data_period,
+				dm.data_group,	
+				pm.place_id,
+				pm.place_name,
+				prm.review_name,
+				prm.user_id,
+				prm.review_count,
+				prm.create_date
+		   FROM
+		      (SELECT 
+		      	review_code,	
+		         data_code,
+		         place_id,
+		         user_id,
+					review_name,
+					review_count,
+					create_date
+		      FROM 
+		         place_review_mst 
+		      WHERE
+		         user_id = #{userId}) prm 
+					INNER JOIN data_mst dm ON (prm.data_code = dm.data_code)
+					INNER JOIN 
+							<choose>
+								<when test='place.equals("food")'> 	
+									place_food_mst
+								</when>    
+								<when test='place.equals("cafe")'> 	
+									place_cafe_mst
+								</when>      	
+								<when test='place.equals("store")'> 	
+									place_store_mst
+								</when>  
+								<when test='place.equals("gas")'> 	
+									place_gas_mst
+								</when>  	
+								<when test='place.equals("parking")'> 	
+									place_parking_mst
+								</when> 
+								<when test='place.equals("hotel")'> 	
+									place_hotel_mst
+								</when>  			  
+							</choose> pm ON (prm.place_id = pm.place_id)
+					) sec
+		WHERE
+			<choose>									
+				<when test='type.equals("name")'> 	
+					sec.data_koname LIKE CONCAT('%',#{searchName},'%')
+				</when>    
+				<when test='type.equals("address")'> 	
+					sec.data_address LIKE CONCAT('%',#{searchName},'%')
+				</when>  
+				<when test='type.equals("divide")'> 	
+					sec.data_divide LIKE CONCAT('%',#{searchName},'%')
+				</when>   
+				<when test='type.equals("period")'> 	
+					sec.data_period LIKE CONCAT('%',#{searchName},'%')
+				</when>   	
+				<when test='type.equals("group")'> 	
+					sec.data_group LIKE CONCAT('%',#{searchName},'%')
+				</when>				  			
+			</choose>
+		GROUP BY
+			sec.review_code
+		ORDER BY
+			<choose>
+				<when test='sort.equals("latest")'> 	
+					sec.review_code DESC
+				</when>  
+				<when test='sort.equals("hits")'> 	
+					sec.review_count DESC
+				</when>   								
+			</choose>  	
+		LIMIT
+			#{index} , 10
+	</select>	
+	
+	<select id="getMyReViewPlaceDataCount" parameterType="hashmap" resultType="Integer">
+		SELECT
+			COUNT(*)
+		FROM
+			(SELECT
+				COUNT(*)
+			FROM
+			   (SELECT
+			    	prm.review_code,		
+					prm.data_code,
+					dm.data_koname,
+					dm.data_address,	
+					dm.data_divide,
+					dm.data_period,
+					dm.data_group,	
+					pm.place_id,
+					pm.place_name,
+					prm.review_name,
+					prm.user_id,
+					prm.review_count,
+					prm.create_date
+			   FROM
+			      (SELECT 
+			      	review_code,	
+			         data_code,
+			         place_id,
+			         user_id,
+						review_name,
+						review_count,
+						create_date
+			      FROM 
+			         place_review_mst 
+			      WHERE
+			         user_id = #{userId}) prm 
+						INNER JOIN data_mst dm ON (prm.data_code = dm.data_code)
+						INNER JOIN 
+								<choose>
+									<when test='place.equals("food")'> 	
+										place_food_mst
+									</when>    
+									<when test='place.equals("cafe")'> 	
+										place_cafe_mst
+									</when>      	
+									<when test='place.equals("store")'> 	
+										place_store_mst
+									</when>  
+									<when test='place.equals("gas")'> 	
+										place_gas_mst
+									</when>  	
+									<when test='place.equals("parking")'> 	
+										place_parking_mst
+									</when> 
+									<when test='place.equals("hotel")'> 	
+										place_hotel_mst
+									</when>  			  
+								</choose> pm ON (prm.place_id = pm.place_id)
+						) sec
+			WHERE
+				<choose>									
+					<when test='type.equals("name")'> 	
+						sec.data_koname LIKE CONCAT('%',#{searchName},'%')
+					</when>    
+					<when test='type.equals("address")'> 	
+						sec.data_address LIKE CONCAT('%',#{searchName},'%')
+					</when>  
+					<when test='type.equals("divide")'> 	
+						sec.data_divide LIKE CONCAT('%',#{searchName},'%')
+					</when>   
+					<when test='type.equals("period")'> 	
+						sec.data_period LIKE CONCAT('%',#{searchName},'%')
+					</when>   	
+					<when test='type.equals("group")'> 	
+						sec.data_group LIKE CONCAT('%',#{searchName},'%')
+					</when>				  			
+				</choose>
+			GROUP BY
+				sec.review_code) cnt	
+	</select>
+</mapper>

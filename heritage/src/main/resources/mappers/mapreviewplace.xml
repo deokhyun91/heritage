@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.web.heritage.domain.map.MapReviewPlaceRespository">
+	
+	<select id="getReviewPlace"  parameterType="String" resultType="com.web.heritage.domain.map.MapReviewPlace">
+		SELECT 
+			pm.*,
+			um.user_gender
+		FROM 
+			(SELECT 
+				*
+			FROM 
+				place_review_mst 
+			WHERE
+				place_id = #{placeId}) pm 
+				LEFT OUTER JOIN	
+					(SELECT 
+						user_id,
+						user_gender
+					FROM
+						user_mst) um ON (pm.user_id = um.user_id)
+		ORDER BY
+			pm.review_code DESC					
+	</select>	
+	
+</mapper>

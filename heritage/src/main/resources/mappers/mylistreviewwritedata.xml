@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.web.heritage.domain.mylist.MyListReviewWriteDataReposity">
+	<select id="getMyListDataView"  parameterType="Integer" resultType="com.web.heritage.domain.mylist.MyListReviewWriteData">
+		SELECT
+			sec.review_code,
+			sec.data_code,
+			sec.review_name,
+			sec.user_id,
+			um.user_gender,
+			dm.data_koname,
+			dm.data_img,
+			sec.review_count,
+			sec.review_content,
+			sec.create_date,
+			sec.update_date
+		FROM
+			(SELECT 
+				review_code,	
+				data_code,
+				review_name,
+				user_id,	
+				review_count,
+				review_content,
+				create_date,
+				update_date
+			FROM 
+				data_review_mst 
+			WHERE
+				review_code = #{code}) sec
+				INNER JOIN data_mst dm ON (sec.data_code = dm.data_code)
+				INNER JOIN user_mst um ON (sec.user_id = um.user_id)
+	</select>	
+	
+	<update id="updateMyListData" parameterType="hashmap">	
+		UPDATE
+			data_review_mst
+		SET
+			review_name = #{reviewName},
+			review_content = #{reviewContent},
+			update_date = NOW()
+		WHERE
+			user_id = #{userId} AND data_code = #{dataCode} AND review_code = #{reviewCode}
+	</update>
+	
+	<delete id="deleteMyListData" parameterType="hashmap">
+		DELETE
+		FROM
+			data_review_mst
+		WHERE		
+			user_id = #{userId} AND data_code = #{dataCode} AND review_code = #{reviewCode}
+	</delete>
+		
+</mapper>

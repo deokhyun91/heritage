@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.web.heritage.domain.mylist.MyListReviewWritePlaceReposity">
+	<select id="getMyListPlaceView"  parameterType="hashmap" resultType="com.web.heritage.domain.mylist.MyListReviewWritePlace">
+		SELECT
+			sec.review_code,
+			sec.data_code,
+			sec.place_id,
+			sec.review_name,
+			sec.user_id,
+			um.user_gender,
+			dm.data_koname,
+			dm.data_img,
+			pm.place_name,
+			pm.place_img,
+			sec.review_content,
+			sec.review_count,
+			sec.create_date,
+			sec.update_date
+		FROM
+			(SELECT 
+				review_code,	
+				data_code,
+				place_id,
+				review_name,
+				user_id,	
+				review_count,
+				review_content,
+				create_date,
+				update_date
+			FROM 
+				place_review_mst 
+			WHERE
+				review_code = #{code}) sec 
+				INNER JOIN data_mst dm ON (sec.data_code = dm.data_code)
+				INNER JOIN user_mst um ON (sec.user_id = um.user_id)
+				INNER JOIN <choose>
+									<when test='place.equals("food")'> 	
+										place_food_mst
+									</when>    
+									<when test='place.equals("cafe")'> 	
+										place_cafe_mst
+									</when>      	
+									<when test='place.equals("store")'> 	
+										place_store_mst
+									</when>  
+									<when test='place.equals("gas")'> 	
+										place_gas_mst
+									</when>  	
+									<when test='place.equals("parking")'> 	
+										place_parking_mst
+									</when> 
+									<when test='place.equals("hotel")'> 	
+										place_hotel_mst
+									</when>  			  
+								</choose> pm ON (sec.data_code = pm.data_code AND sec.place_id = pm.place_id)
+	</select>	
+	
+	<update id="updateMyListPlace" parameterType="hashmap">	
+		UPDATE
+			place_review_mst
+		SET
+			review_name = #{reviewName},
+			review_content = #{reviewContent},
+			update_date = NOW()
+		WHERE
+			user_id = #{userId} AND review_code = #{reviewCode}  AND data_code = #{dataCode} AND place_id = #{placeId}
+	</update>
+	
+	<delete id="deleteMyListPlace" parameterType="hashmap">
+		DELETE
+		FROM
+			place_review_mst
+		WHERE		
+			user_id = #{userId} AND review_code = #{reviewCode}  AND data_code = #{dataCode} AND place_id = #{placeId}
+	</delete>
+		
+</mapper>

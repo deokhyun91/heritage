@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.web.heritage.domain.review.ReviewCountRespository">		
+	
+	<update id="reviewDataCount" parameterType="Integer">	
+		UPDATE
+			data_review_mst
+		SET
+			review_count = review_count + 1
+		
+		WHERE
+			review_code = #{reviewCode}
+	</update>
+	
+	<update id="reviewPlaceCount" parameterType="Integer">	
+		UPDATE
+			place_review_mst
+		SET
+			review_count = review_count + 1
+		
+		WHERE
+			review_code = #{reviewCode}	
+	</update>
+		
+</mapper>

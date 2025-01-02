@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.web.heritage.domain.mylist.MyListRecommnedDataRepository">
+	
+	<select id="getMyRecommendData" parameterType="hashmap" resultType="com.web.heritage.domain.mylist.MyListRecommendData">
+	SELECT
+    
+		*
+	FROM
+	   (SELECT
+	    	drm.recommend_code,		
+			drm.data_code,
+			dm.data_img,
+			dm.data_koname,
+			dm.data_dynasty,
+			dm.data_address,
+			dm.data_divide,
+			dm.data_period,
+			dm.data_group
+	   FROM
+	      (SELECT 
+	      	recommend_code,	
+	         data_code
+	      FROM 
+	         data_recommend_mst 
+	      WHERE
+	         user_id = #{userName}) drm INNER JOIN data_mst dm ON (drm.data_code = dm.data_code)) sec
+	WHERE
+			<choose>					
+					<when test='type.equals("name")'> 	
+						sec.data_koname LIKE CONCAT('%',#{searchName},'%')
+					</when>    
+					<when test='type.equals("address")'> 	
+						sec.data_address LIKE CONCAT('%',#{searchName},'%')
+					</when>  
+					<when test='type.equals("divide")'> 	
+						sec.data_divide LIKE CONCAT('%',#{searchName},'%')
+					</when>   
+					<when test='type.equals("period")'> 	
+						sec.data_period LIKE CONCAT('%',#{searchName},'%')
+					</when>   	
+					<when test='type.equals("group")'> 	
+						sec.data_group LIKE CONCAT('%',#{searchName},'%')
+					</when>   			
+			</choose>
+	 LIMIT
+			#{index},8;
+	</select>	
+	
+	<select id="getMyRecommendDataCount" parameterType="hashmap" resultType="Integer">
+	SELECT
+    
+		COUNT(*)
+	FROM
+	   (SELECT
+	    	drm.recommend_code,		
+			drm.data_code,
+			dm.data_img,
+			dm.data_koname,
+			dm.data_dynasty,
+			dm.data_address,
+			dm.data_divide,
+			dm.data_period,
+			dm.data_group
+	   FROM
+	      (SELECT 
+	      	recommend_code,	
+	         data_code
+	      FROM 
+	         data_recommend_mst 
+	      WHERE
+	         user_id = #{userName}) drm INNER JOIN data_mst dm ON (drm.data_code = dm.data_code)) sec
+	WHERE
+	  			<choose>					
+					<when test='type.equals("name")'> 	
+						sec.data_koname LIKE CONCAT('%',#{searchName},'%')
+					</when>    
+					<when test='type.equals("address")'> 	
+						sec.data_address LIKE CONCAT('%',#{searchName},'%')
+					</when>  
+					<when test='type.equals("divide")'> 	
+						sec.data_divide LIKE CONCAT('%',#{searchName},'%')
+					</when>   
+					<when test='type.equals("period")'> 	
+						sec.data_period LIKE CONCAT('%',#{searchName},'%')
+					</when>   	
+					<when test='type.equals("group")'> 	
+						sec.data_group LIKE CONCAT('%',#{searchName},'%')
+					</when>   			
+			</choose>
+	</select>
+	
+	<delete id="deleteMyListRecommendData" parameterType="hashmap">
+		DELETE
+		FROM
+			data_recommend_mst
+		WHERE
+			user_id = #{userName} AND recommend_code = #{recommendCode};
+		
+	  </delete>
+</mapper>

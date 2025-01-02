@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.web.heritage.domain.map.MapDataRespository">
+	
+	<select id="getSearch"  parameterType="hashmap" resultType="com.web.heritage.domain.map.MapData">
+		SELECT
+			dm.data_number,	
+			dm.data_divide,
+			dm.data_koname,	
+			dm.data_period,
+			dm.data_dynasty,	
+			dm.data_group,	
+			dm.data_address,	
+			dm.data_code,	
+			dm.data_img,	
+			dm.data_pointx,	
+			dm.data_pointy,
+			review.review_cnt,
+			recommend.recommend_cnt
+		FROM 
+			(SELECT 
+				*
+			FROM 
+				data_mst 
+			WHERE
+				<choose>									
+					<when test='type.equals("name")'> 	
+						data_koname LIKE CONCAT('%',#{searchName},'%')
+					</when>    
+					<when test='type.equals("address")'> 	
+						data_address LIKE CONCAT('%',#{searchName},'%')
+					</when>  
+					<when test='type.equals("divide")'> 	
+						data_divide LIKE CONCAT('%',#{searchName},'%')
+					</when>   
+					<when test='type.equals("period")'> 	
+						data_period LIKE CONCAT('%',#{searchName},'%')
+					</when>   	
+					<when test='type.equals("group")'> 	
+						data_group LIKE CONCAT('%',#{searchName},'%')
+					</when>
+					<when test='type.equals("mainname")'> 	
+						data_koname = #{searchName}
+					</when>    
+					<when test='type.equals("mainaddress")'> 	
+						data_address = #{searchName}
+					</when>   			
+				</choose>) dm	
+					LEFT OUTER JOIN
+						(SELECT 
+							data_code,
+							COUNT(*) review_cnt
+						FROM
+							data_review_mst
+						GROUP BY
+							data_code) review ON (dm.data_code = review.data_code)
+					LEFT OUTER JOIN
+						(SELECT 
+							data_code,
+							COUNT(*) recommend_cnt
+						FROM
+							data_recommend_mst
+						GROUP BY
+							data_code) recommend ON (dm.data_code = recommend.data_code)
+		ORDER BY
+			<choose>
+				<when test='sort.equals("all")'> 	
+					dm.data_number ASC
+				</when>  
+				<when test='sort.equals("review")'> 	
+					review.review_cnt DESC
+				</when>   
+				<when test='sort.equals("recommend")'> 	
+					recommend.recommend_cnt DESC
+				</when> 						
+			</choose>  		
+	</select>
+	
+	<select id="getSearchOption"  parameterType="hashmap" resultType="com.web.heritage.domain.map.MapData">
+		SELECT 
+			dm.data_number,	
+			dm.data_divide,
+			dm.data_koname,	
+			dm.data_period,
+			dm.data_dynasty,	
+			dm.data_group,	
+			dm.data_address,	
+			dm.data_code,	
+			dm.data_img,	
+			dm.data_pointx,	
+			dm.data_pointy,
+			review.review_cnt,
+			recommend.recommend_cnt
+		FROM 
+			(SELECT 
+				*
+			FROM 
+				data_mst 
+			WHERE
+				<choose>
+					<when test='addressCheck.equals("disable")'> 		
+						data_address LIKE CONCAT('%%') AND
+					</when>    
+					<when test='addressCheck.equals("enable")'> 		
+						data_address LIKE CONCAT('%',#{address},'%') AND
+					</when> 
+				</choose>
+				<choose>
+					<when test='divideCheck.equals("disable")'> 	
+						data_divide LIKE CONCAT('%%') AND			
+					</when>    
+					<when test='divideCheck.equals("enable")'> 	
+						data_divide LIKE CONCAT('%',#{divide},'%') AND
+					</when> 
+				</choose>
+				<choose>
+					<when test='periodCheck.equals("disable")'> 		
+						data_period LIKE CONCAT('%%') AND		
+					</when>    
+					<when test='periodCheck.equals("enable")'> 		
+						data_period LIKE CONCAT('%',#{period},'%') AND
+					</when> 
+				</choose>
+				<choose>
+					<when test='groupCheck.equals("disable")'> 	
+						data_group LIKE CONCAT('%%')			
+					</when>    
+					<when test='groupCheck.equals("enable")'> 	
+						data_group LIKE CONCAT('%',#{group},'%')
+					</when> 
+				</choose>)dm
+					LEFT OUTER JOIN
+						(SELECT 
+							data_code,
+							COUNT(*) review_cnt
+						FROM
+							data_review_mst
+						GROUP BY
+							data_code) review ON (dm.data_code = review.data_code)
+					LEFT OUTER JOIN
+						(SELECT 
+							data_code,
+							COUNT(*) recommend_cnt
+						FROM
+							data_recommend_mst
+						GROUP BY
+							data_code) recommend ON (dm.data_code = recommend.data_code)
+			ORDER BY
+			<choose>
+				<when test='sort.equals("all")'> 	
+					dm.data_number ASC
+				</when>  
+				<when test='sort.equals("review")'> 	
+					review.review_cnt DESC
+				</when>   
+				<when test='sort.equals("recommend")'> 	
+					recommend.recommend_cnt DESC
+				</when> 						
+			</choose>  	
+	</select>
+	
+</mapper>

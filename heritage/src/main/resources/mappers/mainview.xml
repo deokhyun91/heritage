@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.web.heritage.domain.main.MainViewRespository">
+	
+	<select id="getMainRecommend"  resultType="com.web.heritage.domain.main.MainView">
+		SELECT
+			dm.data_code,
+			dm.data_koname,
+			dm.data_dynasty,
+			dm.data_address,
+			dm.data_img,
+			sec.cnt	
+		FROM
+			(SELECT 	
+				recommend_code,
+				data_code,		
+				COUNT(*) cnt
+			FROM 
+				data_recommend_mst 
+			GROUP BY
+				data_code
+			ORDER BY
+				cnt DESC
+			LIMIT
+				0 , 4) sec 	INNER JOIN data_mst dm ON (sec.data_code = dm.data_code)
+		GROUP BY
+			sec.recommend_code
+		ORDER BY
+			sec.cnt DESC;									
+	</select>
+	
+	<select id="getMainReview"  resultType="com.web.heritage.domain.main.MainView">
+		SELECT
+			dm.data_code,
+			dm.data_koname,
+			dm.data_dynasty,
+			dm.data_address,
+			dm.data_img,
+			sec.cnt	
+		FROM
+			(SELECT 	
+				review_code,
+				data_code,		
+				COUNT(*) cnt
+			FROM 
+				data_review_mst 
+			GROUP BY
+				data_code
+			ORDER BY
+				cnt DESC
+			LIMIT
+				0 , 4) sec 	INNER JOIN data_mst dm ON (sec.data_code = dm.data_code)
+		GROUP BY
+			sec.review_code	
+		ORDER BY
+			sec.cnt DESC;
+	</select>
+	
+</mapper>

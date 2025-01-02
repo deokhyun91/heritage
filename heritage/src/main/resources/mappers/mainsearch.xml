@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.web.heritage.domain.main.MainSearhRespository">
+	
+	<select id="getMainSearchAddress" parameterType="String" resultType="com.web.heritage.domain.main.MainSearh">
+		SELECT 
+			data_koname,
+			data_address
+		FROM 
+			data_mst 
+		WHERE
+			data_address LIKE CONCAT('%',#{searchName},'%')
+		LIMIT
+			0 , 20
+	</select>
+	
+	<select id="getMainSearchName"  parameterType="String" resultType="com.web.heritage.domain.main.MainSearh">
+		SELECT 
+			data_koname,
+			data_address
+		FROM 
+			data_mst
+		WHERE
+			data_koname LIKE CONCAT('%',#{searchName},'%')
+		LIMIT
+			0 , 20
+	</select>
+	
+</mapper>
