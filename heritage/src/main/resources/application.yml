@@ -17,7 +17,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3306/heritage?useUnicode=true&characterEncoding=UTF-8
     username: root
-    password: deok%t4r3e2w1q
+    password: 
       
 mybatis: 
   mapper-locations: 
